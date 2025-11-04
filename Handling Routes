@@ -1,0 +1,48 @@
+/*Commands
+	C1: npx express-generator exp1
+	file creation: exp1->app.js
+	C2: cd exp1
+	C3: npm install
+	c4: node app.js
+*/
+
+
+const express = require('express');
+const app = express();
+const PORT = 3000;
+
+// Defining a simple route
+app.get('/', (req, res) => {
+  res.send('Welcome to Express Route Handling Example!');
+});
+
+// Handling Routes with Parameters
+app.get('/student/:name/:id', (req, res) => {
+  const { name, id } = req.params;
+  res.send(`Student Name: ${name}, ID: ${id}`);
+});
+
+// Handling Query Parameters
+app.get('/search', (req, res) => {
+  const { subject, marks } = req.query;
+  res.send(`Searched Subject: ${subject}, Marks: ${marks}`);
+});
+
+// URL Building Example
+app.get('/build-url/:coursename', (req, res) => {
+  const course = req.params.coursename;
+  const builtUrl = `/course/${course}?status=active`;
+  const url=builtUrl;
+  res.send(`Built URL: <a href ="${url}"> Go to url ${course}`);
+});
+
+app.get('/course/:coursename',(req,res) => {
+	const cname=req.params.coursename;
+	const status=req.query.status;
+        res.send(`Course : ${cname} Status:${status}`);
+  }	
+ );
+
+
+
+app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
