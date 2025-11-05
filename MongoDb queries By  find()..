@@ -1,0 +1,53 @@
+
+const { MongoClient } = require("mongodb");
+
+const url = "mongodb://localhost:27017";
+const client = new MongoClient(url);
+
+async function run() {
+  try {
+    await client.connect();
+    console.log("Connected successfully to MongoDB");
+
+    const db = client.db("mydatabase");
+    const collection = db.collection("students");
+
+    
+    await collection.insertMany([
+      { name: "Easwar", age: 20, grade: "A" },
+      { name: "ganesh", age: 22, grade: "B" },
+      { name: "Arjun", age: 21, grade: "A" },
+      { name: "Sai", age: 23, grade: "C" },
+      { name: "Ram", age: 22, grade: "B" }
+    ]);
+    console.log("Sample records inserted!");
+
+  
+    const allStudents = await collection.find().toArray();
+    console.log("All students:", allStudents);
+
+  
+    const limitStudents = await collection.find().limit(3).toArray();
+    console.log("First 3 students:", limitStudents);
+
+    
+    const sortStudents = await collection.find().sort({ age: 1 }).toArray();
+    console.log("Students sorted by age (asc):", sortStudents);
+
+    
+    await collection.createIndex({ name: 1 });
+    console.log("Index created on 'name' field");
+
+    const gradeSummary = await collection.aggregate([
+      { $group: { _id: "$grade", count: { $sum: 1 } } }
+    ]).toArray();
+    console.log("Grade summary:", gradeSummary);
+
+  } catch (err) {
+    console.error("Error:", err);
+  } finally {
+    await client.close();
+  }
+}
+
+run();
