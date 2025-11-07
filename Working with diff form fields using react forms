@@ -1,0 +1,178 @@
+import React, { useState } from "react";
+
+function FormExample() {
+ 
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    gender: "",
+    skills: [],
+    country: "",
+    comments: "",
+  });
+
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+
+   
+    if (type === "checkbox") {
+      setFormData((prevData) => {
+        const updatedSkills = checked
+          ? [...prevData.skills, value]
+          : prevData.skills.filter((skill) => skill !== value);
+        return { ...prevData, skills: updatedSkills };
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
+  };
+
+ 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert("Form Submitted! Check console for data.");
+    console.log("Form Data:", formData);
+  };
+
+  return (
+    <div style={{ maxWidth: "500px", margin: "30px auto", fontFamily: "Arial" }}>
+      <h2 style={{ textAlign: "center" }}>React Form Example</h2>
+
+      <form onSubmit={handleSubmit}>
+        {/* Text Input */}
+        <label>
+          Name:
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+        </label>
+
+        <br /><br />
+
+        {/* Email Input */}
+        <label>
+          Email:
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </label>
+
+        <br /><br />
+
+        {/* Radio Buttons */}
+        <label>Gender:</label><br />
+        <label>
+          <input
+            type="radio"
+            name="gender"
+            value="Male"
+            checked={formData.gender === "Male"}
+            onChange={handleChange}
+          />
+          Male
+        </label>
+
+        <label style={{ marginLeft: "10px" }}>
+          <input
+            type="radio"
+            name="gender"
+            value="Female"
+            checked={formData.gender === "Female"}
+            onChange={handleChange}
+          />
+          Female
+        </label>
+
+        <br /><br />
+
+        {/* Checkboxes */}
+        <label>Skills:</label><br />
+        <label>
+          <input
+            type="checkbox"
+            name="skills"
+            value="React"
+            checked={formData.skills.includes("React")}
+            onChange={handleChange}
+          />
+          React
+        </label>
+
+        <label style={{ marginLeft: "10px" }}>
+          <input
+            type="checkbox"
+            name="skills"
+            value="Node.js"
+            checked={formData.skills.includes("Node.js")}
+            onChange={handleChange}
+          />
+          Node.js
+        </label>
+
+        <label style={{ marginLeft: "10px" }}>
+          <input
+            type="checkbox"
+            name="skills"
+            value="Python"
+            checked={formData.skills.includes("Python")}
+            onChange={handleChange}
+          />
+          Python
+        </label>
+
+        <br /><br />
+
+        {/* Dropdown */}
+        <label>
+          Country:
+          <select
+            name="country"
+            value={formData.country}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select Country</option>
+            <option value="India">India</option>
+            <option value="USA">USA</option>
+            <option value="UK">UK</option>
+          </select>
+        </label>
+
+        <br /><br />
+
+        {/* Textarea */}
+        <label>
+          Comments:
+          <textarea
+            name="comments"
+            value={formData.comments}
+            onChange={handleChange}
+            rows="3"
+            placeholder="Enter your feedback"
+          />
+        </label>
+
+        <br /><br />
+
+        {/* Submit Button */}
+        <button type="submit" style={{ padding: "6px 12px" }}>
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+}
+
+export default FormExample;
